@@ -4,10 +4,9 @@ import algoSdk from "../utils/algoSdk";
 import { CreateNftModal, NftCard } from "../components";
 
 export default function Dashboard() {
-  const [wallet, setWallet] = useState();
+  const [wallet, setWallet] = useState(null);
   const [parsedAssets, setParsedAssets] = useState([]);
   const [showCreateNftModal, setShowCreateNftModal] = useState(false);
-  const [asset, setAsset] = useState(null);
 
   const toggleCreateNftModal = () =>
     setShowCreateNftModal((prevState) => !prevState);
@@ -16,18 +15,57 @@ export default function Dashboard() {
     toggleCreateNftModal();
   };
 
-  const fetchAssets = async () => {
-    // change assetId to retrieve all assetsId's
-    const parsedAsset = await algoSdk.getAssetInformation(89329739);
-    setAsset(parsedAsset);
+  const fetchAccount = () => {
+    const mnemonic = localStorage.getItem("mnemonic");
+    var keys = algoSdk.mnemonicToSecretKey(mnemonic);
+    algoSdk
+      .getAccountInformation(keys.addr)
+      .then((payload) => {
+        let walletDetails = {
+          ...payload,
+          secretKey: keys.sk,
+          mnemonic,
+        };
+        setWallet(walletDetails);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const fetchAssets = () => {
+    const assetsArray = [];
+
+    wallet.assets.forEach((asst) => {
+      const { "asset-id": assetId } = asst;
+
+      // change assetId to retrieve all assetsId's
+      if (assetId === 89329739) {
+        const assetPromise = algoSdk.getAssetInformation(assetId);
+        assetsArray.push(assetPromise);
+      }
+    });
+
+    Promise.all(assetsArray).then((payload) => setParsedAssets(payload));
+  };
+
+  const onAcceptButtonPress = () => {
+    setShowCreateNftModal(false);
+  };
+
+  const onCancelButtonPress = () => {
+    setShowCreateNftModal(false);
   };
 
   useEffect(() => {
-    const json = localStorage.getItem("wallet");
-    const savedWallet = JSON.parse(json);
-    setWallet(savedWallet);
-    fetchAssets(savedWallet.assets);
+    fetchAccount();
   }, []);
+
+  useEffect(() => {
+    if (wallet) {
+      fetchAssets();
+    }
+  }, [wallet]);
 
   return (
     <div className="relative">
@@ -44,10 +82,18 @@ export default function Dashboard() {
           Crear NFT
         </button>
         <div className="flex justify-around align-middle items-center my-10 flex-wrap">
-          {asset !== null && <NftCard asset={asset} />}
+          {parsedAssets.map((asset) => (
+            <NftCard key={asset.index} asset={asset} />
+          ))}
         </div>
       </div>
-      {showCreateNftModal && <CreateNftModal wallet={wallet} />}
+      {showCreateNftModal && (
+        <CreateNftModal
+          wallet={wallet}
+          onAcceptButtonPress={onAcceptButtonPress}
+          onCancelButtonPress={onCancelButtonPress}
+        />
+      )}
     </div>
   );
 }

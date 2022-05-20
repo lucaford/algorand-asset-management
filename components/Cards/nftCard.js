@@ -1,8 +1,8 @@
 import Image from "next/image";
 
 export const NftCard = ({ asset }) => {
-  console.log("asset: ", asset);
   const { params } = asset;
+  
   return (
     <div className="card bg-[#15263F] w-80 h-[32rem] rounded-xl p-6 space-y-4">
       <div className="relative h-52 w-full">

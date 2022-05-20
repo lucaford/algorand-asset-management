@@ -1,29 +1,13 @@
 import { useRouter } from "next/router";
 
-import algoSdk from "../utils/algoSdk";
-
 export default function Home() {
   const router = useRouter();
 
   const logIn = (event) => {
     event.preventDefault();
     const mnemonic = event.target[0].value;
-    var keys = algoSdk.mnemonicToSecretKey(mnemonic);
-    algoSdk
-      .getAccountInformation(keys.addr)
-      .then((payload) => {
-        let walletDetails = {
-          ...payload,
-          secretKey: keys.sk,
-          mnemonic,
-        };
-        const jsonWallet = JSON.stringify(walletDetails);
-        localStorage.setItem("wallet", jsonWallet);
-        router.push("dashboard");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    localStorage.setItem("mnemonic", mnemonic);
+    router.push("dashboard");
   };
 
   return (

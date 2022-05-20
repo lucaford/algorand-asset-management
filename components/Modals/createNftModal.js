@@ -1,8 +1,14 @@
+import { useEffect } from "react";
+
 import { ModalTemplate } from "./ModalTemplate";
 import algoSdk from "../../utils/algoSdk";
 
-export const CreateNftModal = ({ wallet }) => {
-  const onCreateNftSubmit = async (event) => {
+export const CreateNftModal = ({
+  wallet,
+  onAcceptButtonPress,
+  onCancelButtonPress,
+}) => {
+  const onFormSubmit = async (event) => {
     event.preventDefault();
     const assetName = event.target[0].value;
     const unitName = event.target[1].value;
@@ -32,26 +38,24 @@ export const CreateNftModal = ({ wallet }) => {
         decimals
       );
       await algoSdk.waitForConfirmation(txId);
+      onAcceptButtonPress();
     } catch (e) {
       console.log(e);
     }
   };
 
   return (
-    <ModalTemplate>
-      <form
-        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-        onSubmit={onCreateNftSubmit}
-      >
+    <ModalTemplate onCrossButtonPress={onCancelButtonPress}>
+      <form className="px-8" onSubmit={onFormSubmit}>
         <div>
           <label
-            className="block text-gray-700 text-sm font-bold mb-2"
+            className="block text-white text-sm font-bold mb-2"
             htmlFor="assetName"
           >
             Asset name*
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
             id="assetName"
             type="text"
             placeholder=""
@@ -59,13 +63,13 @@ export const CreateNftModal = ({ wallet }) => {
         </div>
         <div className="my-5">
           <label
-            className="block text-gray-700 text-sm font-bold mb-2"
+            className="block text-white text-sm font-bold mb-2"
             htmlFor="assetName"
           >
             Unit Name*
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
             id="unitName"
             type="text"
             placeholder=""
@@ -73,13 +77,13 @@ export const CreateNftModal = ({ wallet }) => {
         </div>
         <div className="my-5">
           <label
-            className="block text-gray-700 text-sm font-bold mb-2"
+            className="block text-white text-sm font-bold mb-2"
             htmlFor="assetName"
           >
             Asset Url*
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
             id="assetUrl"
             type="text"
             placeholder=""
@@ -87,22 +91,26 @@ export const CreateNftModal = ({ wallet }) => {
         </div>
         <div className="my-5">
           <label
-            className="block text-gray-700 text-sm font-bold mb-2"
+            className="block text-white text-sm font-bold mb-2"
             htmlFor="assetName"
           >
             Metadata Hash*
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
             id="metadataHash"
             type="text"
             placeholder=""
           />
         </div>
-
-        <button className="text-red-300 rounded border p-2 w-max" type="submit">
-          Crear NFT
-        </button>
+        <div className="flex items-center py-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
+          <button
+            type="submit"
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >
+            Crear NFT
+          </button>
+        </div>
       </form>
     </ModalTemplate>
   );
