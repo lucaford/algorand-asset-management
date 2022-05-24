@@ -40,10 +40,9 @@ export default function Dashboard() {
       const { "asset-id": assetId } = asst;
 
       // change assetId to retrieve all assetsId's
-      if (assetId === 89329739) {
-        const assetPromise = algoSdk.getAssetInformation(assetId);
-        assetsArray.push(assetPromise);
-      }
+
+      const assetPromise = algoSdk.getAssetInformation(assetId);
+      assetsArray.push(assetPromise);
     });
 
     Promise.all(assetsArray).then((payload) => setParsedAssets(payload));
