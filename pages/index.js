@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 export default function Home() {
   const router = useRouter();
@@ -11,7 +12,7 @@ export default function Home() {
   };
 
   return (
-    <div className="flex justify-center align-middle items-center h-screen bg-gray-900">
+    <div className="flex flex-col justify-center align-middle items-center h-screen bg-gray-900">
       <div className="w-full max-w-xs">
         <form
           className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
@@ -46,6 +47,15 @@ export default function Home() {
             </a>
           </div>
         </form>
+      </div>
+      <div className="flex items-center">
+        <div className="w-5 h-5">
+          <Image
+            src={require("../images/exclamation-mark.png")}
+            alt="exclamation mark"
+          />
+        </div>
+        <p className="text-white text-lg">TestNet Only</p>
       </div>
     </div>
   );

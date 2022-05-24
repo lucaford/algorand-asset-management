@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export const NftCard = ({ asset }) => {
   const { params } = asset;
-  
+
   return (
     <div className="card bg-[#15263F] w-80 h-[32rem] rounded-xl p-6 space-y-4">
       <div className="relative h-52 w-full">
@@ -19,9 +19,6 @@ export const NftCard = ({ asset }) => {
             {params.name} #{asset.index}
           </h2>
         </a>
-        {/* <p className="text-slate-500 text-sm select-none">
-          Our Equilibrium collection promotes balance and calm.
-        </p> */}
         <div className="flex items-center justify-between font-semibold text-sm border-b border-slate-500 pb-6">
           <span
             id="price"

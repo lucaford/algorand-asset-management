@@ -74,13 +74,14 @@ export default function Dashboard() {
           <p className="text-gray-50">{wallet?.address}</p>
           <p className="text-gray-50">{wallet?.amount / 1000000} ALGOs</p>
         </div>
-
-        <button
-          className="text-red-300 rounded border p-2"
-          onClick={handleCreateNftButtonPress}
-        >
-          Crear NFT
-        </button>
+        <div className="flex justify-center mt-3">
+          <button
+            className="text-red-300 rounded border p-2"
+            onClick={handleCreateNftButtonPress}
+          >
+            Crear Asset
+          </button>
+        </div>
         <div className="flex justify-around align-middle items-center my-10 flex-wrap">
           {parsedAssets.map((asset) => (
             <NftCard key={asset.index} asset={asset} />
