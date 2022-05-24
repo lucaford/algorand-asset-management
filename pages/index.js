@@ -40,7 +40,7 @@ export default function Home() {
               LogIn
             </button>
             <a
-              className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
+              className="inline-block align-baseline font-bold text-sm text-stone-500"
               href="#"
             >
               Crear cuenta
